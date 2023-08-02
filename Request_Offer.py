@@ -133,7 +133,7 @@ curOffer = ViewFunction("viewOfferList",[curUID])
 print('For current request, we have following offers:')
 for i in curOffer:
     print(f'supplier = {i[2]}, price = {i[0]} ethers, \nsize of data = {i[1]} kB')
-sleep(30)
+#sleep(30)
 selection_addr = []
 for i in selection:
     curSlt_addr = accountList[i][0]
