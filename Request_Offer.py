@@ -78,7 +78,7 @@ supplierList = [1,3,2,4] #index of list (0~3)
 rate = [10,20] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
-budget_ether = int(5) #Budget of consumer, this is only a soft restriction
+budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
 offers = [[2,10], [3,8], [1,7],[2,6]] #[price,data_size]
 selection = [1,3] #index of list (0~3), note elements of this list must be included by "supplierList"
 MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy","QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum","IPFS_4"]
