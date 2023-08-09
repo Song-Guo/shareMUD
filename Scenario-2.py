@@ -73,14 +73,14 @@ accountList = [["0xdCc53851c024f78dc48eA940Ab3def65a4107aa6","0x70bf3a9f14a95d95
  ["0x2E956CbC07BBF622270b964ACC63786836c47AFC","0x7bd562c158ff887ad030e0fcc9b139654d23abd14b65ea58f793723cb8a8a928"]]
 
 
-consumerCode = int(3)   #index of list (0~4)
-supplierList = [0,2,1,4] #index of list (0~4)
-rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
+consumerCode = int(1)   #index of list (0~4)
+supplierList = [0,2,3,4] #index of list (0~4)
+rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
 budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
 offers = [[2,10],[1,8],[2,12],[1,10]] #[price,data_size]
-selection = [0,2,1] #index of list (0~4), note elements of this list must be included by "supplierList"
+selection = [0,2,3] #index of list (0~4), note elements of this list must be included by "supplierList"
 MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy","QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum","IPFS_4"]
 #Note this list need to have same length as "selection"
 
@@ -167,19 +167,6 @@ viewBalance()
 submission = ViewFunction("view_submission",[curUID])
 print(f'Request (UID {curUID}) completed, original request and MUD file submission from supplier are:')
 print(submission)
-
-RateList = []
-j = 0
-for i in selection:
-    CurRate = rate[j]
-    CurSupplier = accountList[i][0]
-    TransactFunction("rate_supplier", accountList[consumerCode][0], accountList[consumerCode][1], [curUID,CurSupplier,CurRate])
-    result = ViewFunction("ViewRate", [CurSupplier])
-    RateList.append((CurSupplier,result))
-
-print("Rate of suppliers are:",RateList)
-
-
 
 gasConsumption = []
 for i in receipts:

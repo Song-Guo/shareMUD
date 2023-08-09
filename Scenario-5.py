@@ -73,14 +73,14 @@ accountList = [["0xdCc53851c024f78dc48eA940Ab3def65a4107aa6","0x70bf3a9f14a95d95
  ["0x2E956CbC07BBF622270b964ACC63786836c47AFC","0x7bd562c158ff887ad030e0fcc9b139654d23abd14b65ea58f793723cb8a8a928"]]
 
 
-consumerCode = int(3)   #index of list (0~4)
-supplierList = [0,2,1,4] #index of list (0~4)
-rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
+consumerCode = int(0)   #index of list (0~3)
+supplierList = [] #index of list (0~3)
+rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
 budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
-offers = [[2,10],[1,8],[2,12],[1,10]] #[price,data_size]
-selection = [0,2,1] #index of list (0~4), note elements of this list must be included by "supplierList"
+offers = [] #[price,data_size]
+selection = [] #index of list (0~3), note elements of this list must be included by "supplierList"
 MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy","QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum","IPFS_4"]
 #Note this list need to have same length as "selection"
 
@@ -92,93 +92,6 @@ consumerPK = accountList[consumerCode][1]
 TransactFunction("sendRequest",consumerAddr,consumerPK,[cpe_h,cpe_o,budget_ether])
 print(f'consumer {consumerAddr} published a request, description = {cpe_h,cpe_o},budget = {budget_ether} ethers')
 print('\n')
-
-curOpenReq = ViewFunction_noArgu("viewOpenRequests")
-curUIDList = []
-for i in curOpenReq:
-    UID_i = "0x" + i[0].hex()
-    description = i[1]
-    budget = i[2]
-    timeStamp = i[3]
-    timeArray = time.localtime(timeStamp)
-    requestTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-    consumerAddr = i[-1]
-    curUIDList.append(UID_i)
-    print(f'Request UID = {UID_i},request time = {requestTime}, \ndescription = {description}, consumerAddr = {consumerAddr}')
-    print('\n')
-
-#curUID = input("please input selection of UID, suppliers will start to submit offers: ")
-curUID = curUIDList[-1]
-
-print('\n')
-
-for i in offers:
-    i.insert(0,curUID)
-
-j = 0
-for i in supplierList:
-    curAddr = accountList[i][0]
-    curPK = accountList[i][1]
-    curOffer = offers[j]
-    TransactFunction("offer",curAddr,curPK,curOffer)
-    j+=1
-    print(f'supplier {curAddr} submitted an offer for request {curUID}, \n price = {curOffer[1]},size of data = {curOffer[2]}')
-    print('\n')
-    #sleep(5)
-
-
-
-curOffer = ViewFunction("viewOfferList",[curUID])
-print('For current request, we have following offers:')
-for i in curOffer:
-    print(f'supplier = {i[2]}, price = {i[0]} ethers, \nsize of data = {i[1]} kB')
-#sleep(30)
-selection_addr = []
-
-for i in selection:
-    curSlt_addr = accountList[i][0]
-    selection_addr.append(curSlt_addr)
-
-selection_check = [curUID,selection_addr]
-check_result = ViewFunction("select_check",selection_check)
-selectionList = check_result[0]
-SumOfEth = check_result[1]
-print(f'Selected suppliers are: {selectionList}, \n Need to pay {SumOfEth} ether of ETH!')
-
-print(f'Consumer "{accountList[consumerCode][0]}" will pay {SumOfEth} ethers to suppliers\n{selectionList} to get MUD file')
-#decision = input("Press Enter key to continue transaction, otherwise enter 'C' to cancel: ")
-#if decision == "C":
-#    sys.exit()
-print(f'Transaction confirmed, consumer will pay {SumOfEth} Ether(s) to smart contract.')
-viewBalance()
-TransactPayableFunction("select_payment", accountList[consumerCode][0], accountList[consumerCode][1], [curUID,selectionList], SumOfEth)
-print(f'Transaction completed, consumer have paid {SumOfEth} Ether to smart contract')
-viewBalance()
-
-print("Supplier started to submit MUD file offchain storage address to blockchain, \n then get ether from smart contract")
-j=0
-for i in selection:
-    supplierAddr = accountList[i][0]
-    supplierPK = accountList[i][1]
-    TransactFunction("submit",supplierAddr,supplierPK,[curUID,MUDadd[j]])
-    j+=1
-viewBalance()
-
-submission = ViewFunction("view_submission",[curUID])
-print(f'Request (UID {curUID}) completed, original request and MUD file submission from supplier are:')
-print(submission)
-
-RateList = []
-j = 0
-for i in selection:
-    CurRate = rate[j]
-    CurSupplier = accountList[i][0]
-    TransactFunction("rate_supplier", accountList[consumerCode][0], accountList[consumerCode][1], [curUID,CurSupplier,CurRate])
-    result = ViewFunction("ViewRate", [CurSupplier])
-    RateList.append((CurSupplier,result))
-
-print("Rate of suppliers are:",RateList)
-
 
 
 gasConsumption = []
