@@ -2,6 +2,18 @@ from web3 import Web3
 import json,time,sys,csv
 from time import sleep
 
+w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+contract_addr = '0xA3cf7b8eb1627B64A6c363d8964BE44037799B5E'
+filePath = "/Users/skoll/shareMUD_ABI.json"
+text = open(filePath, encoding='utf-8').read()
+contract_abi = json.loads(text)
+contract = w3.eth.contract(address=contract_addr, abi=contract_abi)
+accountList = [["0xdCc53851c024f78dc48eA940Ab3def65a4107aa6","0x70bf3a9f14a95d95ca097a52765d12f0b2346c6fa84baacddeaec2e97a27270b"],
+ ["0xcA16c80B8dE1997F84fA21B8ae65FFB58c060886","0xfd6d57f6e675f2dfac879aa6d5da701da04d7bee6abc93660d9ed5e8f9750681"],
+ ["0x823F0A3893547553498A26856954C7da7b370ff8","0xde5d8f85c008954c62dc5b745dffd699f31851cfc26a680407b417e7a7ae629d"],
+ ["0x4F4A1F16c4E4AFe40B258D2850C214a92E2f2f4E","0xcd8917697737a461eccd27483f9e9f80b8c75269dc434216d79c2632c87b4d5f"],
+ ["0x2E956CbC07BBF622270b964ACC63786836c47AFC","0x7bd562c158ff887ad030e0fcc9b139654d23abd14b65ea58f793723cb8a8a928"]]
+
 def TransactFunction(function_name, Eth_address, Private_key, ListOfParameters):
     print(
         f'Send data to method "{function_name}" with {ListOfParameters} from account{Eth_address} to smart contract {contract_addr}'
@@ -59,18 +71,6 @@ def viewBalance():
     for i in BalanceList:
         print(i,"\n")
 
-
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
-contract_addr = '0xeE2c7Af3D9e12CFe43e70bfcfDb49f2960125c44'
-filePath = "/Users/skoll/shareMUD_ABI.json"
-text = open(filePath, encoding='utf-8').read()
-contract_abi = json.loads(text)
-contract = w3.eth.contract(address=contract_addr, abi=contract_abi)
-accountList = [["0xdCc53851c024f78dc48eA940Ab3def65a4107aa6","0x70bf3a9f14a95d95ca097a52765d12f0b2346c6fa84baacddeaec2e97a27270b"],
- ["0xcA16c80B8dE1997F84fA21B8ae65FFB58c060886","0xfd6d57f6e675f2dfac879aa6d5da701da04d7bee6abc93660d9ed5e8f9750681"],
- ["0x823F0A3893547553498A26856954C7da7b370ff8","0xde5d8f85c008954c62dc5b745dffd699f31851cfc26a680407b417e7a7ae629d"],
- ["0x4F4A1F16c4E4AFe40B258D2850C214a92E2f2f4E","0xcd8917697737a461eccd27483f9e9f80b8c75269dc434216d79c2632c87b4d5f"],
- ["0x2E956CbC07BBF622270b964ACC63786836c47AFC","0x7bd562c158ff887ad030e0fcc9b139654d23abd14b65ea58f793723cb8a8a928"]]
 
 
 consumerCode = int(3)   #index of list (0~4)
