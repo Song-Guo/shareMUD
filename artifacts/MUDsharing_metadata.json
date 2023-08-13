@@ -37,6 +37,26 @@
 										"internalType": "string",
 										"name": "var_cpe_o",
 										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mfctr",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_dev",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mdl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_fimwr",
+										"type": "string"
 									}
 								],
 								"internalType": "struct MUDsharing.Description",
@@ -167,6 +187,26 @@
 								"internalType": "string",
 								"name": "var_cpe_o",
 								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_mfctr",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_dev",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_mdl",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_fimwr",
+								"type": "string"
 							}
 						],
 						"internalType": "struct MUDsharing.Description",
@@ -243,6 +283,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_uniqueID",
+						"type": "bytes32"
+					}
+				],
+				"name": "check_submission",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -398,6 +451,26 @@
 					{
 						"internalType": "string",
 						"name": "_cpe_o",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_mfctr",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_dev",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_mdl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_fimwr",
 						"type": "string"
 					},
 					{
@@ -557,6 +630,26 @@
 										"internalType": "string",
 										"name": "var_cpe_o",
 										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mfctr",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_dev",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mdl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_fimwr",
+										"type": "string"
 									}
 								],
 								"internalType": "struct MUDsharing.Description",
@@ -617,6 +710,26 @@
 							{
 								"internalType": "string",
 								"name": "var_cpe_o",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_mfctr",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_dev",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_mdl",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "var_fimwr",
 								"type": "string"
 							}
 						],
@@ -706,7 +819,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"shareMUD-5.sol": "MUDsharing"
+			"shareMUD-6.sol": "MUDsharing"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -720,12 +833,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"shareMUD-5.sol": {
-			"keccak256": "0xaa53cef16e4e8d09207b0bd7b0b773491114f98e80bb4d7f10a513bf8f18d116",
+		"shareMUD-6.sol": {
+			"keccak256": "0xb0b36ac8135c55d2df27da85eb5bbd7d57abc4de0f3dce49859f322d89f6d65e",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://289e5d5ba284f4dbfaa053ebe8fed16c11b50fd33000486bf96a0949e205fc7a",
-				"dweb:/ipfs/QmT8pz8yqE9RESaP8G4cq3kbf6u1sjmbwX6KscvyPry4ji"
+				"bzz-raw://fbd49e56c5033b2418454d5ab985b7e512666727839ed1dca8002a423dbd7a2c",
+				"dweb:/ipfs/QmVSu5Q5F4mxy9ywiF1evQd2mqptfcmk2D5j4GXcdW9cdg"
 			]
 		}
 	},
