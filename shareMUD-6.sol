@@ -93,12 +93,6 @@ contract MUDsharing {
         emit RequestPublished(msg.sender, CurRequest);
     //5.allow user to lookup uniqueID of their requests (with their address) via another function
     }
-    function viewOpenRequests() view public returns(single_request[] memory){
-        return viewRequests;
-    }
-    function viewYourRequests() view public returns(bytes32[] memory){
-        return addressToID[msg.sender];
-    }
     function offer(bytes32 _uniqueID, uint _offer_eth,uint _size_data_kb) public {
         single_request memory CurRequest = RequestMapping[_uniqueID];
         uint _expireTime = CurRequest.varTimeRequest + expire_offer;
@@ -116,39 +110,6 @@ contract MUDsharing {
         );
         OfferMapping[_uniqueID][msg.sender] = CurOffer;
         OfferList[_uniqueID].push(CurOffer);
-    }
-
-    function viewOfferMapping(bytes32 _uniqueID,address _supplierAddr) view public returns(single_offer memory) {
-        return OfferMapping[_uniqueID][_supplierAddr];
-    }
-    function viewOfferList(bytes32 _uniqueID) view public returns(single_offer[] memory) {
-        return OfferList[_uniqueID];
-    }
-    function select_check(bytes32 _uniqueID, address[] memory _selections) view public returns (address[] memory , uint ) {
-    //0. only consumer can call this function; (need modifier or require)
-    //1. only when request closed, consumer can make selection (This is not working now)
-    //2. validate selection list(input) : all selected address need to be a member of the offer list;
-    //2.1 obtain mapping of supplier address to single_offer; address => single_offer;
-    //2.2 iterate selection list, if the address consumer provided not in our mapping,
-    //raise an error.
-        single_request memory _CurRequest = RequestMapping[_uniqueID];
-        uint _time_select = _CurRequest.varTimeRequest;
-        uint _expire = _CurRequest.varTimeRequest + expire_select;
-        if (_time_select > _expire) {
-            revert("Expired_Select");
-        }
-        uint _checked_sum_ETH_eth = 0;
-        for(uint i=0; i<_selections.length; i++) {
-            address _checkAddr = _selections[i];
-            single_offer memory _checkOffer = OfferMapping[_uniqueID][_checkAddr];
-            _checked_sum_ETH_eth += _checkOffer.var_offer_eth;
-            address _check_address = _checkOffer.var_supplier_addr;
-            if(_check_address == address(0x0)) {
-                revert("InvalidAddr");
-            }
-        } 
-    //3. if selections are valid: return(checked_selections, Sum of ETH in eth)
-        return(_selections,_checked_sum_ETH_eth);
     }
     function select_payment(bytes32 _uniqueID, address[] memory _selectionList) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
@@ -179,7 +140,6 @@ contract MUDsharing {
         msg.value == _sum_ETH_eth * 1 ether,
         "NoEnoughEth");
     }
-
     function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
         require(selectionBool[_uniqueID][msg.sender] == true, "NotSelected");
@@ -201,7 +161,6 @@ contract MUDsharing {
         _PaySupplier.transfer(10**18**_price_in_eth);
         submissionBool[_uniqueID][msg.sender] = true;
     }
-
     function refund(bytes32 _uniqueID, address _supplierAddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
         require(RequestMapping[_uniqueID].varConsumerAddr == msg.sender, "NotConsumer");
