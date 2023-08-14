@@ -16,7 +16,6 @@ contract MUDsharing {
         Description varDescription;
         uint varBudget;
         uint varTimeRequest;
-        string varStatus;
         address varConsumerAddr;
     }
 
@@ -28,7 +27,16 @@ contract MUDsharing {
         string var_mdl;
         string var_fimwr;
     }
-
+    struct single_submission{
+        bytes32 var_UID;
+        string var_fileAddr;
+        address var_supplierAddr;
+    }
+    struct single_rate{
+        bytes32 varUID;
+        uint varRate;
+        address varSupplierAddr;
+    }
     constructor() {
         owner = msg.sender;
     }
@@ -43,6 +51,12 @@ contract MUDsharing {
     mapping(address=>bytes32[]) public addressToID;
     mapping(bytes32=>mapping(address=>single_offer)) public OfferMapping;
     mapping(bytes32=>single_offer[]) public OfferList;
+    mapping(bytes32=>mapping(address=>bool)) public selectionBool;
+    mapping(bytes32=>mapping(address=>bool)) public submissionBool;
+    mapping(bytes32=>mapping(address=>bool)) public refundBool;
+    mapping(bytes32=>mapping(address=>bool)) public rateBool;
+    mapping(bytes32=>single_submission[]) public submissionList;
+    mapping(bytes32=>mapping(address=>single_rate[])) public rateList;
     single_request[] public viewRequests;
 
     //solidity cannot return a mapping in bulk, 
@@ -70,7 +84,6 @@ contract MUDsharing {
             _description,
             _budget_eth,
             _time_request,
-            "open",
             msg.sender);
     //4. create struct single_request, then add into a mapping;
     //and push the single_request struct into an array for consumer/supplier to view.
@@ -87,16 +100,12 @@ contract MUDsharing {
         return addressToID[msg.sender];
     }
     function offer(bytes32 _uniqueID, uint _offer_eth,uint _size_data_kb) public {
-        if(RequestMapping[_uniqueID].varStatus != "open") {
-            revert("Request closed!");
-        }
         single_request memory CurRequest = RequestMapping[_uniqueID];
         uint _expireTime = CurRequest.varTimeRequest + expire_offer;
         uint _time_offer = block.timestamp;
     //1. supplier can only provide an offer when the request was not closed.
         if(_time_offer > _expireTime) {
-            RequestMapping[_uniqueID].varStatus = "expired_offer";
-            revert("Request expired! Function offer");
+            revert("Expired_Offer");
         }
         single_offer memory CurOffer;
     //2. create a struct single_offer, with inputed data
@@ -126,7 +135,7 @@ contract MUDsharing {
         uint _time_select = _CurRequest.varTimeRequest;
         uint _expire = _CurRequest.varTimeRequest + expire_select;
         if (_time_select > _expire) {
-            revert("Request Expired! Function select_check");
+            revert("Expired_Select");
         }
         uint _checked_sum_ETH_eth = 0;
         for(uint i=0; i<_selections.length; i++) {
@@ -135,155 +144,119 @@ contract MUDsharing {
             _checked_sum_ETH_eth += _checkOffer.var_offer_eth;
             address _check_address = _checkOffer.var_supplier_addr;
             if(_check_address == address(0x0)) {
-                revert("Your input contains invalid supplier address!");
+                revert("InvalidAddr");
             }
         } 
     //3. if selections are valid: return(checked_selections, Sum of ETH in eth)
         return(_selections,_checked_sum_ETH_eth);
     }
-    mapping(bytes32=>mapping(address=>bool)) public selectionMapping;
-
-    function select_payment(bytes32 _uniqueID, address[] memory _selection) payable public {
-        if(RequestMapping[_uniqueID].varStatus != "open") {
-            revert("Request closed!");
-        }
+    function select_payment(bytes32 _uniqueID, address[] memory _selectionList) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
-//1. only consumer can make a selection;
-        address _caller = msg.sender;
         address _consumerAdd = _CurRequest.varConsumerAddr;
-        require(_caller == _consumerAdd,"Only consumer can make selection");
+        require(_consumerAdd == msg.sender,"Only consumer can make a selection");
         uint _time_select = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_select;
-        if (_time_select > _expire) {
-            RequestMapping[_uniqueID].varStatus = "expired_select";
-            revert("Request Expired! Function select_payment");
+        if(_time_select > _expire) {
+            revert("Request Expired by select_payment");
         }
         uint _sum_ETH_eth = 0 ;
-        for(uint i=0; i<_selection.length; i++) {
-            address _SelectedSupplierAddr = _selection[i];
+        for(uint i=0; i<_selectionList.length; i++) {
+            address _SelectedSupplierAddr = _selectionList[i];
+//            single_offer memory _checkOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
+//            address _check_address = _checkOffer.var_supplier_addr;
+//            if(_check_address == address(0x0)) {
+//                revert("InvalidAddr");
+//            }
             single_offer memory _SelectedOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
             uint _CurOffer = _SelectedOffer.var_offer_eth;
             _sum_ETH_eth += _CurOffer;
-            selectionMapping[_uniqueID][_SelectedSupplierAddr] = true;
+            selectionBool[_uniqueID][_SelectedSupplierAddr] = true;
+            submissionBool[_uniqueID][_SelectedSupplierAddr] = false;
+            refundBool[_uniqueID][_SelectedSupplierAddr] = false;
+            rateBool[_uniqueID][_SelectedSupplierAddr] = false;
         }
         require(
         msg.value == _sum_ETH_eth * 1 ether,
-        "Need to pay enough ETH to publish a request!");
+        "NoEnoughEth");
+    }
 
-    //2. for each selected supplier(identified by their address), consumer pay ETH to smart contract
-    //# need further change: to reduce gas consumption, better calculate the sum of ETH and 
-    //send ETH to smart contract in one trasaction 
-
-    }       
-    struct supplier_submission{
-        address supplier_addr;
-        string file_addr;
-    }
-    mapping(bytes32=>supplier_submission[]) public submissionMapping;
-    mapping(bytes32=>mapping(address=>uint)) public submissionStatus;
-    //0= not submitted and not rated; 1 = submitted not rated; 2 = submitted and rated; 
-    function submit(bytes32 _uniqueID,string memory _IPFSaddr) payable public {
-        if(RequestMapping[_uniqueID].varStatus != "open") {
-            revert("Request closed!");
-        }
-    //1. only selected supplier can get paid by delivering MUD to consumer
-        address _supplierAddr = msg.sender;
-        if(selectionMapping[_uniqueID][_supplierAddr] != true) {
-            revert("You are not selected!");
-        }
-        //Expire: if failed to submit, the Ether is reverted to consumer; 
-        //or the consumer can request to revert the money
-        //Note avoid double payment 
-        single_request memory CurRequest = RequestMapping[_uniqueID];
-        uint _expireTime = CurRequest.varTimeRequest + expire_submit;
-        uint _time_offer = block.timestamp;
-    //1. supplier can only provide an offer when the request was not closed.
-        if(_time_offer > _expireTime) {
-            address payable _CurConsumer = payable(RequestMapping[_uniqueID].varConsumerAddr);
-            uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
-            _CurConsumer.transfer(10**18**_CurOffer);
-            selectionMapping[_uniqueID][_supplierAddr] = false;
-            RequestMapping[_uniqueID].varStatus = "expired_submit";
-            revert("Request expired! Function Submit");
-            //if supplier failed to submit before expiry:
-            //1. return ETH to consumer
-            //2. make supplier unselected (avoid double payment)
-            //3. revert the function call
-        }
-    //2. need to get the price of offer
-        uint _price_in_eth;
-        _price_in_eth = OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
-    //3. submit MUD address to mapping submissionMapping;
-        supplier_submission memory curSubmission;
-        curSubmission = supplier_submission(msg.sender,_IPFSaddr);
-        submissionMapping[_uniqueID].push(curSubmission);
-    //4. supplier get paid by smart contract.
-        address payable _provider_addr = payable(_supplierAddr);
-        _provider_addr.transfer(10**18*_price_in_eth);
-        selectionMapping[_uniqueID][_supplierAddr] = false;
-    //5. Remove selection to avoid double payment;
-        submissionStatus[_uniqueID][_supplier_addr] = true;
-    }
-    function view_submission(bytes32 _uniqueID) view public returns(supplier_submission[] memory) {
-        return(submissionMapping[_uniqueID]);
-    }
-    struct single_rate{
-        uint varRate;
-        bytes32 varUniqueID;
-    }
-    function refund(bytes32 _uniqueID, address _supplier) payable public{
+    function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
-        uint _time_select = _CurRequest.varTimeRequest;
+        require(selectionBool[_uniqueID][msg.sender] == true, "NotSelected");
+        require(submissionBool[_uniqueID][msg.sender] == false, "NoDoublePayment");
+        uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
-        if (_time_select > _expire) {
-            revert("Request Expired! Function select_check");
+        address _supplierAddr = msg.sender;
+        if(_time_submit > _expire) {
+            address payable _PayConsumer = payable(_CurRequest.varConsumerAddr);
+            uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
+            _PayConsumer.transfer(10**18**_CurOffer);
+            submissionBool[_uniqueID][msg.sender] = true;
+            revert("Request Expired, submit overdue");
         }
-        address _Consumer = CurRequest.varConsumerAddr;
-        require(msg.sender == _Consumer,"Only Consumer can call refund!")
-        if(selectionMapping[_uniqueID][_supplier] != true) {
-            revert("supplier not selected!");
-        }
-        if(submissionStatus[_uniqueID][_supplier] = true) {
-            revert("Supplier already submitted!");
-        }
-        selectionMapping[_uniqueID][_supplier] = false;
-        uint _price_in_eth;
-        _price_in_eth = OfferMapping[_uniqueID][_supplier].var_offer_eth;
-        address payable _Consumer = payable(_Consumer);
-        _Consumer.transfer(10**18**_price_in_eth);
-    }
-    function check_submission(bytes32 _uniqueID) payable public {
-        //function: let consumer remove all ETH from those suppliers failed to submit before due time
-        //May able to implement with DApp
-        }
-        
-    mapping(address=>single_rate[]) rateMapping;
-
-    function rate_supplier(bytes32 _uniqueID, address _supplierAddr, uint _rate) public {
-        //function: 
-        address _RequestOwner = RequestMapping[_uniqueID].varConsumerAddr;
-        require(msg.sender == _RequestOwner, "You are not eligible to rate this transaction");
-        //check eligibility: only consumer of certain transaction can rate other suppliers
-        //check eligibility: supplier must be a selected supplier of that specific request
-        require(submissionStatus[_uniqueID][_supplierAddr] = true, "Only submitted supplier of this transaction can be rated!");
-        _CurRate = single_rate(_rate,_uniqueID);
-        rateMapping[supplier_addr].push(_CurRate);
-        submissionStatus[_uniqueID][supplier_addr] = false;
-    }
-    function rate_check(bytes32 _uniqueID) public {
-        //Function: all expired rate should be automatically set to full mark 
+        uint _price_in_eth = OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
+        single_submission memory CurSub = single_submission(_uniqueID,_MUDaddr,_supplierAddr);
+        submissionList[_uniqueID].push(CurSub);
+        address payable _PaySupplier = payable(_supplierAddr);
+        _PaySupplier.transfer(10**18**_price_in_eth);
+        submissionBool[_uniqueID][msg.sender] = true;
     }
 
+    function refund(bytes32 _uniqueID, address _supplierAddr) payable public {
+        single_request memory _CurRequest = RequestMapping[_uniqueID];
+        require(RequestMapping[_uniqueID].varConsumerAddr == msg.sender, "NotConsumer");
+        require(selectionBool[_uniqueID][msg.sender] == true, "NotSelected");
+        uint _time_submit = block.timestamp;
+        uint _expire = _CurRequest.varTimeRequest + expire_submit;
+        if(_time_submit < _expire) {
+            revert("Request when overdue");
+        }
+        require(submissionBool[_uniqueID][msg.sender] == false, "NoDoublePayment");
+        address payable _PayConsumer = payable(RequestMapping[_uniqueID].varConsumerAddr);
+        uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
+        _PayConsumer.transfer(10**18**_CurOffer);
+        submissionBool[_uniqueID][msg.sender] = true;
+        refundBool[_uniqueID][msg.sender] = true;
+    }
+
+    function rate(bytes32 _uniqueID, address _supplierAddr, uint _rate) public {
+        single_request memory _CurRequest = RequestMapping[_uniqueID];
+        address _consumer = _CurRequest.varConsumerAddr;
+        require(msg.sender == _consumer, "Only consumer can rate a supplier");
+        require(rateBool[_uniqueID][_supplierAddr] == false, "RateExist");
+        require(selectionBool[_uniqueID][_supplierAddr] == true,"NotSelected");
+        require(submissionBool[_uniqueID][_supplierAddr] == true,"NotSubmitted");
+        require(refundBool[_uniqueID][_supplierAddr] == false, "Refunded");
+        uint _time_submit = block.timestamp;
+        uint _expire = _CurRequest.varTimeRequest + expire_rate;
+        require(_rate>0,"Rate>0");
+        require(_rate<=50,"Rate<=50");
+        if(_time_submit > _expire) {
+            single_rate memory _CurRate = single_rate(_uniqueID,50,_supplierAddr);
+            rateList[_uniqueID][_supplierAddr].push(_CurRate);
+            rateBool[_uniqueID][_supplierAddr] = true;
+            revert("Expired_Rate");
+        }
+        single_rate memory _CurRate = single_rate(_uniqueID,_rate,_supplierAddr);
+        rateList[_uniqueID][_supplierAddr].push(_CurRate);
+        rateBool[_uniqueID][_supplierAddr] = true;
+    }
+
+    function forgot_rate(bytes32 _uniqueID) public {
+        single_request memory _CurRequest = RequestMapping[_uniqueID];
+        address _supplierAddr = msg.sender;
+        require(rateBool[_uniqueID][_supplierAddr] == false, "RateExist");
+        require(selectionBool[_uniqueID][_supplierAddr] == true,"NotSelected");
+        require(submissionBool[_uniqueID][_supplierAddr] == true,"NotSubmitted");
+        require(refundBool[_uniqueID][_supplierAddr] == false, "Refunded");
+        uint _time_submit = block.timestamp;
+        uint _expire = _CurRequest.varTimeRequest + expire_rate;
+        if(_time_submit > _expire) {
+            single_rate memory _CurRate = single_rate(_uniqueID,50,_supplierAddr);
+            rateList[_uniqueID][_supplierAddr].push(_CurRate);
+            rateBool[_uniqueID][_supplierAddr] = true;
+            revert("Expired_Rate");
+        }
+    }
 
 }
-
-
-
-//next steps:
-//1. use modifier to check eligibility (e.g. only consumer can make a selection and pay ETH to supplier;
-// only selected supplier can submit a MUD file address and get ETH, etc.).
-//2. Expire check: this function is not operational now.
-//3. Interactive: The current procedure requires consumer and suppliers mannually check every step, and 
-//these functions cannot interact with user. -- Event and emit
-
-
