@@ -61,7 +61,7 @@ def viewBalance():
 
 
 w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
-contract_addr = '0xb2D986963f860E66aE2F5ce41F7596A4231b613f'
+contract_addr = '0x173bcD59eA02c53850c246781B0092E32037a052'
 filePath = "/Users/skoll/shareMUD_ABI.json"
 text = open(filePath, encoding='utf-8').read()
 contract_abi = json.loads(text)
@@ -78,10 +78,6 @@ supplierList = [0,2,1,4] #index of list (0~4)
 rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
-mfctr = "Amazon"
-dev = "Echo"
-mdl="v1"
-fimwr ="v2"
 budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
 offers = [[2,10],[1,8],[2,12],[1,10]] #[price,data_size]
 selection = [0,2,1] #index of list (0~4), note elements of this list must be included by "supplierList"
@@ -89,11 +85,11 @@ MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR
 #Note this list need to have same length as "selection"
 
 receipts = []
-requestInput = [cpe_h,cpe_o,mfctr,dev,mdl,fimwr,budget_ether]
+requestInput = [cpe_h,cpe_o,budget_ether]
 consumerAddr = accountList[consumerCode][0]
 consumerPK = accountList[consumerCode][1]
 
-TransactFunction("sendRequest",consumerAddr,consumerPK,requestInput)
+TransactFunction("sendRequest",consumerAddr,consumerPK,[cpe_h,cpe_o,budget_ether])
 print(f'consumer {consumerAddr} published a request, description = {cpe_h,cpe_o},budget = {budget_ether} ethers')
 print('\n')
 
@@ -137,24 +133,25 @@ print('For current request, we have following offers:')
 for i in curOffer:
     print(f'supplier = {i[2]}, price = {i[0]} ethers, \nsize of data = {i[1]} kB')
 #sleep(30)
+selection_addr = []
 
-SumOfEth = int()
-selectionList = []
 for i in selection:
-    curSupplier = accountList[i][0]
-    curPrice = offers[i][1]
-    selectionList.append(curSupplier)
-    SumOfEth+=int(curPrice)
+    curSlt_addr = accountList[i][0]
+    selection_addr.append(curSlt_addr)
 
+selection_check = [curUID,selection_addr]
+check_result = ViewFunction("select_check",selection_check)
+selectionList = check_result[0]
+SumOfEth = check_result[1]
 print(f'Selected suppliers are: {selectionList}, \n Need to pay {SumOfEth} ether of ETH!')
 
-print(f'Consumer "{consumerAddr}" will pay {SumOfEth} ethers to suppliers\n{selectionList} to get MUD file')
+print(f'Consumer "{accountList[consumerCode][0]}" will pay {SumOfEth} ethers to suppliers\n{selectionList} to get MUD file')
 #decision = input("Press Enter key to continue transaction, otherwise enter 'C' to cancel: ")
 #if decision == "C":
 #    sys.exit()
 print(f'Transaction confirmed, consumer will pay {SumOfEth} Ether(s) to smart contract.')
 viewBalance()
-TransactPayableFunction("select_payment", consumerAddr, consumerPK, [curUID,selectionList], SumOfEth)
+TransactPayableFunction("select_payment", accountList[consumerCode][0], accountList[consumerCode][1], [curUID,selectionList], SumOfEth)
 print(f'Transaction completed, consumer have paid {SumOfEth} Ether to smart contract')
 viewBalance()
 
@@ -167,29 +164,20 @@ for i in selection:
     j+=1
 viewBalance()
 
-
 submission = ViewFunction("view_submission",[curUID])
 print(f'Request (UID {curUID}) completed, original request and MUD file submission from supplier are:')
-for i in submission:
-    UID = '0x'+ str(i[0].hex())
-    output = f'UID = {UID},MUD IPFS address = {i[1]}, supplier address = {i[2]} \n '
-    print(output)
-
-
+print(submission)
 
 RateList = []
 j = 0
 for i in selection:
     CurRate = rate[j]
     CurSupplier = accountList[i][0]
-    TransactFunction("rate", consumerAddr, consumerPK, [curUID,CurSupplier,CurRate])
+    TransactFunction("rate_supplier", accountList[consumerCode][0], accountList[consumerCode][1], [curUID,CurSupplier,CurRate])
     result = ViewFunction("ViewRate", [CurSupplier])
-    print(f'Existing rate of supplier{CurSupplier} are: \n')
-    for i in result:
-        UID = '0x' + i[0].hex()
-        print(f'UID = {UID}, Rate = {i[1]} \n')
+    RateList.append((CurSupplier,result))
 
-
+print("Rate of suppliers are:",RateList)
 
 
 

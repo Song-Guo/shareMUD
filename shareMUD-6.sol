@@ -1,8 +1,9 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity >= 0.8.18;
 
-contract MUDsharing {
 
+contract MUDsharing {
+    
     // Declare state variables of contract
     address public owner;
     struct single_offer{
@@ -35,33 +36,31 @@ contract MUDsharing {
     struct single_rate{
         bytes32 varUID;
         uint varRate;
-        address varSupplierAddr;
     }
     constructor() {
         owner = msg.sender;
     }
 
-    event RequestPublished(address consumer_addr, single_request description);
-
-    uint expire_offer = 10;
-    uint expire_select = 20;
-    uint expire_submit = 30;
-    uint expire_rate = 40;
-    mapping(bytes32=>single_request) public RequestMapping;
-    mapping(address=>bytes32[]) public addressToID;
-    mapping(bytes32=>mapping(address=>single_offer)) public OfferMapping;
-    mapping(bytes32=>single_offer[]) public OfferList;
-    mapping(bytes32=>mapping(address=>bool)) public selectionBool;
-    mapping(bytes32=>mapping(address=>bool)) public submissionBool;
-    mapping(bytes32=>mapping(address=>bool)) public refundBool;
-    mapping(bytes32=>mapping(address=>bool)) public rateBool;
-    mapping(bytes32=>single_submission[]) public submissionList;
-    mapping(bytes32=>mapping(address=>single_rate[])) public rateList;
-    single_request[] public viewRequests;
+    uint expire_offer = 1200;
+    uint expire_select = 2400;
+    uint expire_submit = 3600;
+    uint expire_rate = 4800;
+    mapping(bytes32=>single_request) internal RequestMapping;
+    mapping(address=>bytes32[]) internal addressToID;
+    mapping(bytes32=>mapping(address=>single_offer)) internal OfferMapping;
+    mapping(bytes32=>single_offer[]) internal OfferList;
+    mapping(bytes32=>mapping(address=>bool)) internal selectionBool;
+    mapping(bytes32=>mapping(address=>bool)) internal submissionBool;
+    mapping(bytes32=>mapping(address=>bool)) internal refundBool;
+    mapping(bytes32=>mapping(address=>bool)) internal rateBool;
+    mapping(bytes32=>single_submission[]) internal submissionList;
+    mapping(address=>single_rate[]) internal rateList;
+    single_request[] internal viewRequests;
 
     //solidity cannot return a mapping in bulk, 
     //for suppliers to view all avaliable request, need an array of requests
     
+
     function sendRequest(
         string memory _cpe_h, 
         string memory _cpe_o, 
@@ -70,7 +69,7 @@ contract MUDsharing {
         string memory _mdl,
         string memory _fimwr,
         uint _budget_eth
-        ) public {
+        ) public returns(bytes32) {
     //1. input required: manufacturer, device name, model, firmware version, budget (in eth)
         single_request memory CurRequest;
         Description memory _description;
@@ -90,9 +89,11 @@ contract MUDsharing {
         RequestMapping[_uniqueID] = CurRequest;
         viewRequests.push(CurRequest);
         addressToID[msg.sender].push(_uniqueID);
-        emit RequestPublished(msg.sender, CurRequest);
+        return(_uniqueID);
     //5.allow user to lookup uniqueID of their requests (with their address) via another function
     }
+
+
     function offer(bytes32 _uniqueID, uint _offer_eth,uint _size_data_kb) public {
         single_request memory CurRequest = RequestMapping[_uniqueID];
         uint _expireTime = CurRequest.varTimeRequest + expire_offer;
@@ -123,11 +124,11 @@ contract MUDsharing {
         uint _sum_ETH_eth = 0 ;
         for(uint i=0; i<_selectionList.length; i++) {
             address _SelectedSupplierAddr = _selectionList[i];
-//            single_offer memory _checkOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
-//            address _check_address = _checkOffer.var_supplier_addr;
-//            if(_check_address == address(0x0)) {
-//                revert("InvalidAddr");
-//            }
+            single_offer memory _checkOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
+            address _check_address = _checkOffer.var_supplier_addr;
+            if(_check_address == address(0x0)) {
+                revert("InvalidAddr");
+            }
             single_offer memory _SelectedOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
             uint _CurOffer = _SelectedOffer.var_offer_eth;
             _sum_ETH_eth += _CurOffer;
@@ -140,26 +141,31 @@ contract MUDsharing {
         msg.value == _sum_ETH_eth * 1 ether,
         "NoEnoughEth");
     }
-    function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public {
+    function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public returns(string memory) {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
-        require(selectionBool[_uniqueID][msg.sender] == true, "NotSelected");
-        require(submissionBool[_uniqueID][msg.sender] == false, "NoDoublePayment");
+        address _supplierAddr = msg.sender;
+        require(selectionBool[_uniqueID][_supplierAddr] == true, "NotSelected");
+        require(submissionBool[_uniqueID][_supplierAddr] == false, "NoDoublePayment");
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
-        address _supplierAddr = msg.sender;
-        if(_time_submit > _expire) {
-            address payable _PayConsumer = payable(_CurRequest.varConsumerAddr);
-            uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
-            _PayConsumer.transfer(10**18**_CurOffer);
-            submissionBool[_uniqueID][msg.sender] = true;
-            revert("Request Expired, submit overdue");
+        if(_time_submit >= _expire) {
+            address _consumer = _CurRequest.varConsumerAddr;
+            address payable _PayConsumer = payable(_consumer);
+            single_offer memory _curOffer = OfferMapping[_uniqueID][_supplierAddr];
+            uint _price =  _curOffer.var_offer_eth;
+            _PayConsumer.transfer(10**18*_price);
+            submissionBool[_uniqueID][_supplierAddr] = true;
+            return("Expire_submit");
+        } else {
+            single_offer memory _curOffer = OfferMapping[_uniqueID][_supplierAddr];
+            uint _price_in_eth = _curOffer.var_offer_eth;
+            single_submission memory _CurSub = single_submission(_uniqueID,_MUDaddr,_supplierAddr);
+            submissionList[_uniqueID].push(_CurSub);
+            address payable _PaySupplier = payable(_supplierAddr);
+            _PaySupplier.transfer(10**18*_price_in_eth);
+            submissionBool[_uniqueID][_supplierAddr] = true;
+            return("Success_Submit");
         }
-        uint _price_in_eth = OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
-        single_submission memory CurSub = single_submission(_uniqueID,_MUDaddr,_supplierAddr);
-        submissionList[_uniqueID].push(CurSub);
-        address payable _PaySupplier = payable(_supplierAddr);
-        _PaySupplier.transfer(10**18**_price_in_eth);
-        submissionBool[_uniqueID][msg.sender] = true;
     }
     function refund(bytes32 _uniqueID, address _supplierAddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
@@ -168,7 +174,7 @@ contract MUDsharing {
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
         if(_time_submit < _expire) {
-            revert("Request when overdue");
+            revert("Not Now!");
         }
         require(submissionBool[_uniqueID][msg.sender] == false, "NoDoublePayment");
         address payable _PayConsumer = payable(RequestMapping[_uniqueID].varConsumerAddr);
@@ -191,14 +197,16 @@ contract MUDsharing {
         require(_rate>0,"Rate>0");
         require(_rate<=50,"Rate<=50");
         if(_time_submit > _expire) {
-            single_rate memory _CurRate = single_rate(_uniqueID,50,_supplierAddr);
-            rateList[_uniqueID][_supplierAddr].push(_CurRate);
+            single_rate memory _CurRate_expire = single_rate(_uniqueID,50);
+            rateList[_supplierAddr].push(_CurRate_expire);
             rateBool[_uniqueID][_supplierAddr] = true;
             revert("Expired_Rate");
+        } else {
+            single_rate memory _CurRate = single_rate(_uniqueID,_rate);
+            rateList[_supplierAddr].push(_CurRate);
+            rateBool[_uniqueID][_supplierAddr] = true;
         }
-        single_rate memory _CurRate = single_rate(_uniqueID,_rate,_supplierAddr);
-        rateList[_uniqueID][_supplierAddr].push(_CurRate);
-        rateBool[_uniqueID][_supplierAddr] = true;
+        
     }
 
     function forgot_rate(bytes32 _uniqueID) public {
@@ -211,11 +219,12 @@ contract MUDsharing {
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_rate;
         if(_time_submit > _expire) {
-            single_rate memory _CurRate = single_rate(_uniqueID,50,_supplierAddr);
-            rateList[_uniqueID][_supplierAddr].push(_CurRate);
+            single_rate memory _CurRate = single_rate(_uniqueID,50);
+            rateList[_supplierAddr].push(_CurRate);
             rateBool[_uniqueID][_supplierAddr] = true;
             revert("Expired_Rate");
         }
     }
 
 }
+
