@@ -61,7 +61,7 @@ def viewBalance():
 
 
 w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
-contract_addr = '0xb2D986963f860E66aE2F5ce41F7596A4231b613f'
+contract_addr = '0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f'
 filePath = "/Users/skoll/shareMUD_ABI.json"
 text = open(filePath, encoding='utf-8').read()
 contract_abi = json.loads(text)
@@ -73,8 +73,8 @@ accountList = [["0xA0Fd379e0659796c14B2C3a409a46605950Ef49D","0xc9880a4c7ec092f4
  ["0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890","0xca166358b1bb206cbbe1c73ea440de512c08fe04e29cbb39451b3b9493494441"]]
 
 
-consumerCode = int(3)   #index of list (0~4)
-supplierList = [0,2,1,4] #index of list (0~4)
+consumerCode = int(0)   #index of list (0~4)
+supplierList = [1,2,3,4] #index of list (0~4)
 rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
@@ -83,8 +83,8 @@ dev = "Echo"
 mdl="v1"
 fimwr ="v2"
 budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
-offers = [[2,10],[1,8],[2,12],[1,10]] #[price,data_size]
-selection = [0,2,1] #index of list (0~4), note elements of this list must be included by "supplierList"
+offers = [[0,0],[2,10],[1,8],[3,12],[2,10]] #[price,data_size]
+selection = [2,3,4] #index of list (0~4), note elements of this list must be included by "supplierList"
 MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy","QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum","IPFS_4"]
 #Note this list need to have same length as "selection"
 
@@ -115,6 +115,8 @@ for i in curOpenReq:
 curUID = curUIDList[-1]
 
 print('\n')
+#Expire-offer
+sleep(15)
 
 for i in offers:
     i.insert(0,curUID)
@@ -129,69 +131,6 @@ for i in supplierList:
     print(f'supplier {curAddr} submitted an offer for request {curUID}, \n price = {curOffer[1]},size of data = {curOffer[2]}')
     print('\n')
     #sleep(5)
-
-
-
-curOffer = ViewFunction("viewOfferList",[curUID])
-print('For current request, we have following offers:')
-for i in curOffer:
-    print(f'supplier = {i[2]}, price = {i[0]} ethers, \nsize of data = {i[1]} kB')
-#sleep(30)
-
-SumOfEth = int()
-selectionList = []
-for i in selection:
-    curSupplier = accountList[i][0]
-    curPrice = offers[i][1]
-    selectionList.append(curSupplier)
-    SumOfEth+=int(curPrice)
-
-print(f'Selected suppliers are: {selectionList}, \n Need to pay {SumOfEth} ether of ETH!')
-
-print(f'Consumer "{consumerAddr}" will pay {SumOfEth} ethers to suppliers\n{selectionList} to get MUD file')
-#decision = input("Press Enter key to continue transaction, otherwise enter 'C' to cancel: ")
-#if decision == "C":
-#    sys.exit()
-print(f'Transaction confirmed, consumer will pay {SumOfEth} Ether(s) to smart contract.')
-viewBalance()
-TransactPayableFunction("select_payment", consumerAddr, consumerPK, [curUID,selectionList], SumOfEth)
-print(f'Transaction completed, consumer have paid {SumOfEth} Ether to smart contract')
-viewBalance()
-
-print("Supplier started to submit MUD file offchain storage address to blockchain, \n then get ether from smart contract")
-j=0
-for i in selection:
-    supplierAddr = accountList[i][0]
-    supplierPK = accountList[i][1]
-    TransactFunction("submit",supplierAddr,supplierPK,[curUID,MUDadd[j]])
-    j+=1
-viewBalance()
-
-
-submission = ViewFunction("view_submission",[curUID])
-print(f'Request (UID {curUID}) completed, original request and MUD file submission from supplier are:')
-for i in submission:
-    UID = '0x'+ str(i[0].hex())
-    output = f'UID = {UID},MUD IPFS address = {i[1]}, supplier address = {i[2]} \n '
-    print(output)
-
-
-
-RateList = []
-j = 0
-for i in selection:
-    CurRate = rate[j]
-    CurSupplier = accountList[i][0]
-    TransactFunction("rate", consumerAddr, consumerPK, [curUID,CurSupplier,CurRate])
-    result = ViewFunction("ViewRate", [CurSupplier])
-    print(f'Existing rate of supplier{CurSupplier} are: \n')
-    for i in result:
-        UID = '0x' + i[0].hex()
-        print(f'UID = {UID}, Rate = {i[1]} \n')
-
-
-
-
 
 gasConsumption = []
 for i in receipts:
@@ -212,6 +151,6 @@ print(f'sum of ETH consumption = {ETH_sum}, sum of real world money consumption 
 gasConsumption.append(ETH_sum)
 gasConsumption.append(AUD_sum)
 
-with open("/Users/skoll/Desktop/test2.csv","a") as csvfile:
+with open("/Users/skoll/v6MarginTest/case1.csv","a") as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(gasConsumption)

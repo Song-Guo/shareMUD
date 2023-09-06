@@ -11,238 +11,16 @@
 				"type": "constructor"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "consumer_addr",
-						"type": "address"
-					},
-					{
-						"components": [
-							{
-								"internalType": "bytes32",
-								"name": "varUniqueID",
-								"type": "bytes32"
-							},
-							{
-								"components": [
-									{
-										"internalType": "string",
-										"name": "var_cpe_h",
-										"type": "string"
-									},
-									{
-										"internalType": "string",
-										"name": "var_cpe_o",
-										"type": "string"
-									}
-								],
-								"internalType": "struct MUDsharing.Description",
-								"name": "varDescription",
-								"type": "tuple"
-							},
-							{
-								"internalType": "uint256",
-								"name": "varBudget",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "varTimeRequest",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "varStatus",
-								"type": "string"
-							},
-							{
-								"internalType": "address",
-								"name": "varConsumerAddr",
-								"type": "address"
-							}
-						],
-						"indexed": false,
-						"internalType": "struct MUDsharing.single_request",
-						"name": "description",
-						"type": "tuple"
-					}
-				],
-				"name": "RequestPublished",
-				"type": "event"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "OfferList",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "var_offer_eth",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "var_size_data_kb",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "var_supplier_addr",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"name": "OfferMapping",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "var_offer_eth",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "var_size_data_kb",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "var_supplier_addr",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "",
+						"name": "_uniqueID",
 						"type": "bytes32"
 					}
 				],
-				"name": "RequestMapping",
-				"outputs": [
-					{
-						"internalType": "bytes32",
-						"name": "varUniqueID",
-						"type": "bytes32"
-					},
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "var_cpe_h",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "var_cpe_o",
-								"type": "string"
-							}
-						],
-						"internalType": "struct MUDsharing.Description",
-						"name": "varDescription",
-						"type": "tuple"
-					},
-					{
-						"internalType": "uint256",
-						"name": "varBudget",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "varTimeRequest",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "varStatus",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "varConsumerAddr",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_supplierAddr",
-						"type": "address"
-					}
-				],
-				"name": "ViewRate",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "addressToID",
-				"outputs": [
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"stateMutability": "view",
+				"name": "forgot_rate",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -287,9 +65,19 @@
 						"internalType": "bytes32",
 						"name": "_uniqueID",
 						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "_supplierAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rate",
+						"type": "uint256"
 					}
 				],
-				"name": "rate_check",
+				"name": "rate",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -305,61 +93,9 @@
 						"internalType": "address",
 						"name": "_supplierAddr",
 						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_rate",
-						"type": "uint256"
 					}
 				],
-				"name": "rate_supplier",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "_uniqueID",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "address[]",
-						"name": "_selections",
-						"type": "address[]"
-					}
-				],
-				"name": "select_check",
-				"outputs": [
-					{
-						"internalType": "address[]",
-						"name": "",
-						"type": "address[]"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "_uniqueID",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "address[]",
-						"name": "_selection",
-						"type": "address[]"
-					}
-				],
-				"name": "select_payment",
+				"name": "refund",
 				"outputs": [],
 				"stateMutability": "payable",
 				"type": "function"
@@ -368,24 +104,18 @@
 				"inputs": [
 					{
 						"internalType": "bytes32",
-						"name": "",
+						"name": "_uniqueID",
 						"type": "bytes32"
 					},
 					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
+						"internalType": "address[]",
+						"name": "_selectionList",
+						"type": "address[]"
 					}
 				],
-				"name": "selectionMapping",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
+				"name": "select_payment",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -401,13 +131,39 @@
 						"type": "string"
 					},
 					{
+						"internalType": "string",
+						"name": "_mfctr",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_dev",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_mdl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_fimwr",
+						"type": "string"
+					},
+					{
 						"internalType": "uint256",
 						"name": "_budget_eth",
 						"type": "uint256"
 					}
 				],
 				"name": "sendRequest",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -415,281 +171,24 @@
 				"inputs": [
 					{
 						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "submissionMapping",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "supplier_addr",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "file_addr",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
 						"name": "_uniqueID",
 						"type": "bytes32"
 					},
 					{
 						"internalType": "string",
-						"name": "_IPFSaddr",
+						"name": "_MUDaddr",
 						"type": "string"
 					}
 				],
 				"name": "submit",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "_uniqueID",
-						"type": "bytes32"
-					}
-				],
-				"name": "viewOfferList",
 				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "var_offer_eth",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "var_size_data_kb",
-								"type": "uint256"
-							},
-							{
-								"internalType": "address",
-								"name": "var_supplier_addr",
-								"type": "address"
-							}
-						],
-						"internalType": "struct MUDsharing.single_offer[]",
-						"name": "",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "_uniqueID",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "address",
-						"name": "_supplierAddr",
-						"type": "address"
-					}
-				],
-				"name": "viewOfferMapping",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "var_offer_eth",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "var_size_data_kb",
-								"type": "uint256"
-							},
-							{
-								"internalType": "address",
-								"name": "var_supplier_addr",
-								"type": "address"
-							}
-						],
-						"internalType": "struct MUDsharing.single_offer",
-						"name": "",
-						"type": "tuple"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "viewOpenRequests",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "bytes32",
-								"name": "varUniqueID",
-								"type": "bytes32"
-							},
-							{
-								"components": [
-									{
-										"internalType": "string",
-										"name": "var_cpe_h",
-										"type": "string"
-									},
-									{
-										"internalType": "string",
-										"name": "var_cpe_o",
-										"type": "string"
-									}
-								],
-								"internalType": "struct MUDsharing.Description",
-								"name": "varDescription",
-								"type": "tuple"
-							},
-							{
-								"internalType": "uint256",
-								"name": "varBudget",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "varTimeRequest",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "varStatus",
-								"type": "string"
-							},
-							{
-								"internalType": "address",
-								"name": "varConsumerAddr",
-								"type": "address"
-							}
-						],
-						"internalType": "struct MUDsharing.single_request[]",
-						"name": "",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "viewRequests",
-				"outputs": [
-					{
-						"internalType": "bytes32",
-						"name": "varUniqueID",
-						"type": "bytes32"
-					},
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "var_cpe_h",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "var_cpe_o",
-								"type": "string"
-							}
-						],
-						"internalType": "struct MUDsharing.Description",
-						"name": "varDescription",
-						"type": "tuple"
-					},
-					{
-						"internalType": "uint256",
-						"name": "varBudget",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "varTimeRequest",
-						"type": "uint256"
-					},
 					{
 						"internalType": "string",
-						"name": "varStatus",
+						"name": "",
 						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "varConsumerAddr",
-						"type": "address"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "viewYourRequests",
-				"outputs": [
-					{
-						"internalType": "bytes32[]",
-						"name": "",
-						"type": "bytes32[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "_uniqueID",
-						"type": "bytes32"
-					}
-				],
-				"name": "view_submission",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "supplier_addr",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "file_addr",
-								"type": "string"
-							}
-						],
-						"internalType": "struct MUDsharing.supplier_submission[]",
-						"name": "",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
+				"stateMutability": "payable",
 				"type": "function"
 			}
 		],
@@ -706,7 +205,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"shareMUD-5.sol": "MUDsharing"
+			"shareMUD/shareMUD-6.sol": "MUDsharing"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -720,12 +219,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"shareMUD-5.sol": {
-			"keccak256": "0xaa53cef16e4e8d09207b0bd7b0b773491114f98e80bb4d7f10a513bf8f18d116",
+		"shareMUD/shareMUD-6.sol": {
+			"keccak256": "0x442ed302c2214ad281216b66fa8f133867f0c1e0262c223a5dd591cf00ea337f",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://289e5d5ba284f4dbfaa053ebe8fed16c11b50fd33000486bf96a0949e205fc7a",
-				"dweb:/ipfs/QmT8pz8yqE9RESaP8G4cq3kbf6u1sjmbwX6KscvyPry4ji"
+				"bzz-raw://ddedfd23e40f59e19f45eb49ace90fe12ec090a7d855b0eac114a11d4b74ad6f",
+				"dweb:/ipfs/QmfFBUKkNWDAjiZfhZNpDruKuNMShSN2e7bLMcfjWvG1HA"
 			]
 		}
 	},

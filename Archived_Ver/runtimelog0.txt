@@ -1,0 +1,156 @@
+Send data to method "sendRequest" with ['cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*', 'Amazon', 'Echo', 'v1', 'v2', 5] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xbc22f989d08fe1a4d17211f171be2554ce36a68a34f869392f1973049996daf4
+consumer 0xA0Fd379e0659796c14B2C3a409a46605950Ef49D published a request, description = ('cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*'),budget = 5 ethers
+
+
+Request UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d,request time = 2023-08-17 14:17:36, 
+description = ('cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*', 'Amazon', 'Echo', 'v1', 'v2'), consumerAddr = 0xA0Fd379e0659796c14B2C3a409a46605950Ef49D
+
+
+Request UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694,request time = 2023-08-17 14:33:57, 
+description = ('cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*', 'Amazon', 'Echo', 'v1', 'v2'), consumerAddr = 0xA0Fd379e0659796c14B2C3a409a46605950Ef49D
+
+
+Request UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd,request time = 2023-08-17 14:37:42, 
+description = ('cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*', 'Amazon', 'Echo', 'v1', 'v2'), consumerAddr = 0xA0Fd379e0659796c14B2C3a409a46605950Ef49D
+
+
+
+
+Send data to method "offer" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 0, 0] from account0xfa7A74081a705758A089394266C9b3Eb7ee888f9 to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xbff5b3fd39c734cf0a23093b491e8b278a41a8bb301b8b6ee03503a60027c98f
+supplier 0xfa7A74081a705758A089394266C9b3Eb7ee888f9 submitted an offer for request 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, 
+ price = 0,size of data = 0
+
+
+Send data to method "offer" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 2, 10] from account0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005 to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0x0c6e59d4276a8ffb4490fbcd7a2f7a55a8a59d103ae8460af7fc0d85f0802519
+supplier 0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005 submitted an offer for request 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, 
+ price = 2,size of data = 10
+
+
+Send data to method "offer" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 1, 8] from account0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0x5a27a287442f02781130209b84d25c7a940c94eb60d57ea43a794f370286bd5f
+supplier 0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F submitted an offer for request 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, 
+ price = 1,size of data = 8
+
+
+Send data to method "offer" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 3, 12] from account0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890 to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xef216713ebeb631b3fc73bc5bb518d3b2946334af445b87ad972d453481962a6
+supplier 0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890 submitted an offer for request 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, 
+ price = 3,size of data = 12
+
+
+For current request, we have following offers:
+supplier = 0xfa7A74081a705758A089394266C9b3Eb7ee888f9, price = 0 ethers, 
+size of data = 0 kB
+supplier = 0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005, price = 2 ethers, 
+size of data = 10 kB
+supplier = 0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F, price = 1 ethers, 
+size of data = 8 kB
+supplier = 0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890, price = 3 ethers, 
+size of data = 12 kB
+Selected suppliers are: ['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', '0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', '0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890'], 
+ Need to pay 6 ether of ETH!
+Consumer "0xA0Fd379e0659796c14B2C3a409a46605950Ef49D" will pay 6 ethers to suppliers
+['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', '0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', '0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890'] to get MUD file
+Transaction confirmed, consumer will pay 6 Ether(s) to smart contract.
+accounts and balance (Ether) is: 
+
+['0xA0Fd379e0659796c14B2C3a409a46605950Ef49D', 102.6043375987753] 
+
+['0xfa7A74081a705758A089394266C9b3Eb7ee888f9', 121.97839472744361] 
+
+['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', 127.97727874887424] 
+
+['0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', 8.962405013442702] 
+
+['0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890', 81.98499032989005] 
+
+Attempting send data to method "select_payment" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', ['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', '0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', '0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890']] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xae77aee116d090838253b4be501743227a29ecf02e212740d278720c69daaba2
+Transaction completed, consumer have paid 6 Ether to smart contract
+accounts and balance (Ether) is: 
+
+['0xA0Fd379e0659796c14B2C3a409a46605950Ef49D', 96.60416390577392] 
+
+['0xfa7A74081a705758A089394266C9b3Eb7ee888f9', 121.97839472744361] 
+
+['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', 127.97727874887424] 
+
+['0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', 8.962405013442702] 
+
+['0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890', 81.98499032989005] 
+
+Supplier started to submit MUD file offchain storage address to blockchain, 
+ then get ether from smart contract
+Send data to method "submit" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 'QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ'] from account0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005 to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0x1cef2e3554937e674ede0dc32694009e59f63e0b69858128c9bde03e6808ad5f
+Send data to method "submit" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 'QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy'] from account0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0x3f3e8747ae65073edf3614be73eb452ec61187301db3bc2035c07f95caba8037
+Send data to method "submit" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', 'QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum'] from account0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890 to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xa01c768a9e1f2d03204cf57be3a519e7690490345fc1a04c397a3e83bd199c53
+accounts and balance (Ether) is: 
+
+['0xA0Fd379e0659796c14B2C3a409a46605950Ef49D', 96.60416390577392] 
+
+['0xfa7A74081a705758A089394266C9b3Eb7ee888f9', 121.97839472744361] 
+
+['0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', 129.97704343287236] 
+
+['0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', 9.962186797440957] 
+
+['0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890', 84.98477211388831] 
+
+Request (UID 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd) completed, original request and MUD file submission from supplier are:
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd,MUD IPFS address = QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ, supplier address = 0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005 
+ 
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd,MUD IPFS address = QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy, supplier address = 0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F 
+ 
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd,MUD IPFS address = QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum, supplier address = 0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890 
+ 
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 40 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 40 
+
+Send data to method "rate" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', '0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005', 40] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xa2a5b2e9c87cca59dccc5e2ffd7bf72c243b2c8476ee4ce631bfb2c3f78b74bf
+Existing rate of supplier 0xF4243eac1E31DE16C7Be7e3869bB0Aa704B05005 are: 
+
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 40 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 40 
+
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, Rate = 40 
+
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 50 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 50 
+
+Send data to method "rate" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', '0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F', 50] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0xc3b7b9221a1c29ecc24ce14db94d23439d3fcdaa4c4a2c6033170059026e09b3
+Existing rate of supplier 0x4d8874E43d73596C0B28783f4bCbbd8f4c2e230F are: 
+
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 50 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 50 
+
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, Rate = 50 
+
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 30 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 30 
+
+Send data to method "rate" with ['0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd', '0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890', 30] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f
+Tx successful with hash: 0x12ccb87b2e4fec4c27b16fde17a2f9cd6a81302b1e9a26c94d1942fc2df0260a
+Existing rate of supplier 0xa81FC27026DE1cC229ca58B9311fb79BfB1E6890 are: 
+
+UID = 0x6f170587d348577dc6d739aee35ee1e847acce2f2cd6d4cbfd38ddc140051d1d, Rate = 30 
+
+UID = 0x5dbeefe6fca71628c97d11508c47fa145823af7a0ccbd755c0c2c4f44cdc0694, Rate = 30 
+
+UID = 0x2f227c4a0f8d6b9e334580263238831a34afb36e07f8d80618236b7eb628e1dd, Rate = 30 
+
+[736408, 136834, 199358, 199358, 199358, 173693, 235316, 218216, 218216, 140486, 140486, 140486]
+sum of gas consumption = 2738215
+sum of ETH consumption = 0.0547643, sum of real world money consumption = AUD$164.2929 

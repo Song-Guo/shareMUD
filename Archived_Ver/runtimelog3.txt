@@ -1,0 +1,1 @@
+Send data to method "sendRequest" with ['cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*', 'cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*', 'Amazon', 'Echo', 'v1', 'v2', 5] from account0xA0Fd379e0659796c14B2C3a409a46605950Ef49D to smart contract 0x48Fe643B52D48a44f53ABBD4FB9CC016DFfa307f

@@ -375,7 +375,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"shareMUD-6-view.sol": "viewFunctions"
+			"shareMUD/shareMUD-6-view.sol": "viewFunctions"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -389,7 +389,7 @@
 		"remappings": []
 	},
 	"sources": {
-		"shareMUD-6-view.sol": {
+		"shareMUD/shareMUD-6-view.sol": {
 			"keccak256": "0x7292ca6b0b6efd9ca456ec4d026ca8b726d4d41e7d5b5a68b3e45ae9dd54f973",
 			"license": "UNLICENSED",
 			"urls": [
@@ -397,12 +397,12 @@
 				"dweb:/ipfs/QmaieA15RJYks5AX43urixXGvwGePYYG8K9mSpG3mf4xnj"
 			]
 		},
-		"shareMUD-6.sol": {
-			"keccak256": "0xf63fa9adaa34578222b8f398f61203a17a2507cfcbd4cd398502f1384f42c1a7",
+		"shareMUD/shareMUD-6.sol": {
+			"keccak256": "0x442ed302c2214ad281216b66fa8f133867f0c1e0262c223a5dd591cf00ea337f",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://9a451c7457282a4f0bb117a381ee976135dc7dd7c799a64251ef8eeaed063715",
-				"dweb:/ipfs/QmZSqSXJ8hTefywoDypDUs41Pdp3csDrM4mAJgjV9ov8Zv"
+				"bzz-raw://ddedfd23e40f59e19f45eb49ace90fe12ec090a7d855b0eac114a11d4b74ad6f",
+				"dweb:/ipfs/QmfFBUKkNWDAjiZfhZNpDruKuNMShSN2e7bLMcfjWvG1HA"
 			]
 		}
 	},
