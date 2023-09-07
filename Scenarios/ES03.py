@@ -1,6 +1,7 @@
 from web3 import Web3
 import json,time,sys,csv
-from time import sleep
+import configparser,os
+
 
 def TransactFunction(function_name, Eth_address, Private_key, ListOfParameters):
     print(
@@ -81,20 +82,30 @@ def gasStatistic():
         writer = csv.writer(csvfile)
         writer.writerow(gasConsumption)
 
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
-contract_addr = '0x2B951D8b75fd50Dd7dC0c3E648cb5F4d895caD90'
-filePath = "/Users/skoll/shareMUD_ABI.json"
+
+
+Dir = os.path.split(os.path.realpath(__file__))[0]
+configPath = os.path.join(Dir,"Env.ini")
+print(configPath)
+conf = configparser.ConfigParser()
+conf.read(configPath)
+contract_addr = conf.get('SmartContract',"address")
+RPCinterface = conf.get("SmartContract","RPCinterface")
+filePath = conf.get("SmartContract","ABIpath")
+list1 = conf.sections()
+del list1[0]
+accountList = []
+for i in list1:
+    curList = []
+    curList.append(conf.get(i,'address'))
+    curList.append(conf.get(i,"PK"))
+    accountList.append(curList)
+
+
+w3 = Web3(Web3.HTTPProvider(RPCinterface))
 text = open(filePath, encoding='utf-8').read()
 contract_abi = json.loads(text)
 contract = w3.eth.contract(address=contract_addr, abi=contract_abi)
-
-accountList = [["0xcBAEEA7A888132453021DcA8E475113AFCCB33d0","0x5521f26ed747be8f8620a4292190a4229a903ff23dd6073690e26ba45e09e1ac"],
- ["0xF2a044e007C7855D83A413394c7eB2Ec26Cf2620","0x93d9fcf06d8149c25d1c71ec5fe4e58d0ac8b61061b2bff279c213274d86a8d4"],
- ["0xdD1094Ec799F70b9D89D663Dd433A451B8e0654c","0xa3ef9eb80fbede536a83e902e2bbc3267375486fe9bd04ed8079c81c43d99ae5"],
- ["0x12E26ff0Cb52f49C4a0f5053e9a9040a12Bf6cAC","0xb433c2bf088cb03a4bba0385267b16248e52e877e7fd3ae98d9a00cf758c2430"],
- ["0x8d6AA97417937a47d4095c61F77192bd84d82B5d","0xbc815bc67bf07e5785ad923f37f524ed3dabf4188594f96fcb6d40e941584f07"]]
-
-
 consumerCode = int(0)   #index of list (0~4)
 supplierList = [1,2,3,4] #index of list (0~4)
 rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
