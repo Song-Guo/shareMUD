@@ -97,7 +97,7 @@ accountList = [["0xcBAEEA7A888132453021DcA8E475113AFCCB33d0","0x5521f26ed747be8f
 
 consumerCode = int(0)   #index of list (0~4)
 supplierList = [1,2,3,4] #index of list (0~4)
-rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)
+rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
 cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
 cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
 mfctr = "Amazon"
