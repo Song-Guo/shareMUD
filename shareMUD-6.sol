@@ -41,10 +41,10 @@ contract MUDsharing {
         owner = msg.sender;
     }
 
-    uint expire_offer = 2400;
-    uint expire_select = 2400;
-    uint expire_submit = 2400;
-    uint expire_rate = 2400;
+    uint expire_offer = 10;
+    uint expire_select = 20;
+    uint expire_submit = 30;
+    uint expire_rate = 40;
     mapping(bytes32=>single_request) internal RequestMapping;
     mapping(address=>bytes32[]) internal addressToID;
     mapping(bytes32=>mapping(address=>single_offer)) internal OfferMapping;
@@ -165,13 +165,14 @@ contract MUDsharing {
     function refund(bytes32 _uniqueID, address _supplierAddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
         require(RequestMapping[_uniqueID].varConsumerAddr == msg.sender, "NotConsumer");
-        require(selectionBool[_uniqueID][msg.sender] == true, "NotSelected");
+        require(selectionBool[_uniqueID][_supplierAddr] == true, "NotSelected");
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
         if(_time_submit < _expire) {
-            revert("Not Now!");
+            revert("NotExp");
         }
-        require(submissionBool[_uniqueID][msg.sender] == false, "NoDoublePayment");
+        require(submissionBool[_uniqueID][_supplierAddr] == false, "NoDoublePayment");
+        
         address payable _PayConsumer = payable(RequestMapping[_uniqueID].varConsumerAddr);
         uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
         _PayConsumer.transfer(10**18*_CurOffer);
@@ -215,8 +216,11 @@ contract MUDsharing {
         if(_time_submit > _expire) {
             single_rate memory _CurRate = single_rate(_uniqueID,50);
             rateList[_supplierAddr].push(_CurRate);
-            rateBool[_uniqueID][_supplierAddr] = true;
-            revert("Expired_Rate");
+            rateBool[_uniqueID][_supplierAddr] = true;        
+        } else if (_time_submit > _expire) {
+            revert("NotExp");
+        } else {
+            revert("Unknown mistake");
         }
     }
 

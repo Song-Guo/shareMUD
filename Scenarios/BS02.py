@@ -2,6 +2,14 @@ from web3 import Web3
 import json,time,sys,csv
 import configparser,os
 
+#Code of Ethereum user address: 0~9
+consumerCode = int(1)   #U2
+supplierList = [6] #U7
+offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Do not modify with different scenarios
+selection = [6] #U7
+submitList = [6] #U7
+rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)
+#No rate in BS02
 
 def TransactFunction(function_name, Eth_address, Private_key, ListOfParameters):
     print(
@@ -94,6 +102,8 @@ RPCinterface = conf.get("SmartContract","RPCinterface")
 filePath = conf.get("SmartContract","ABIpath")
 list1 = conf.sections()
 del list1[0]
+del list1[0]
+del list1[0]
 accountList = []
 for i in list1:
     curList = []
@@ -106,21 +116,20 @@ w3 = Web3(Web3.HTTPProvider(RPCinterface))
 text = open(filePath, encoding='utf-8').read()
 contract_abi = json.loads(text)
 contract = w3.eth.contract(address=contract_addr, abi=contract_abi)
-consumerCode = int(0)   #index of list (0~4)
-supplierList = [1,2,3,4] #index of list (0~4)
-rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
-cpe_o = "cpe:2.3:o:blipcare:wi-fi_blood_pressure_monitor_firmware:-:*:*:*:*:*:*:*"
-cpe_h = "cpe:2.3:h:blipcare:wi-fi_blood_pressure_monitor:-:*:*:*:*:*:*:*"
-mfctr = "Amazon"
-dev = "Echo"
-mdl="v1"
-fimwr ="v2"
-budget_ether = int(5) #Budget of consumer, this is only a soft restriction, unit = 1 ether
-offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size]
-selection = [2,3,4] #index of list (0~4), note elements of this list must be included by "supplierList"
-MUDadd = ["QmRRoe2Z8dcCrNzeUmVgeV3R6Ag9Z6rG7qCST6eJvLQUtQ","QmP3e7NyxKgCgCUJKSRR4Q4iZJqq3QMjMpVYefkjXP9eyy","QmPMKuaufTTPiBPSdEuHGtPLxWPb3EanK6BB84mCS9rFum","IPFS_4"]
-#Note this list need to have same length as "selection"
-submitList = [2,3,4] #should be included by selection!
+
+cpe_o = conf.get("request", "cpe_o")
+cpe_h = conf.get("request", "cpe_h")
+mfctr = conf.get("request", "mfctr")
+dev = conf.get("request", "dev")
+mdl = conf.get("request", "mdl")
+fimwr = conf.get("request", "fimwr")
+budget_ether = int(conf.get("request", "budget_ether"))
+
+MUDlist = conf.options("MUDadd")
+MUDadd = []
+for i in MUDlist:
+    MUDadd.append(conf.get("MUDadd",i))
+
 
 receipts = []
 requestInput = [cpe_h,cpe_o,mfctr,dev,mdl,fimwr,budget_ether]

@@ -398,11 +398,11 @@
 			]
 		},
 		"shareMUD/shareMUD-6.sol": {
-			"keccak256": "0x442ed302c2214ad281216b66fa8f133867f0c1e0262c223a5dd591cf00ea337f",
+			"keccak256": "0xc990ab63554e78d646469a66a7279d4355cb0980096452491cbbf7e0da9bcade",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://ddedfd23e40f59e19f45eb49ace90fe12ec090a7d855b0eac114a11d4b74ad6f",
-				"dweb:/ipfs/QmfFBUKkNWDAjiZfhZNpDruKuNMShSN2e7bLMcfjWvG1HA"
+				"bzz-raw://fb834f58d194ab71aebf9002549891706ec60dee95595b0c827d65ee02f68adf",
+				"dweb:/ipfs/QmQSxgh2eFSpGV55TYSATmsJ2nbkR3uUMyWAWuvq1pT8QA"
 			]
 		}
 	},

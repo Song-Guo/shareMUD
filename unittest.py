@@ -8,16 +8,18 @@ conf = configparser.ConfigParser()
 
 conf.read(configPath)
 
-SCaddress = conf.get('SmartContract',"address")
-print(SCaddress)
+# SCaddress = conf.get('SmartContract',"address")
+# print(SCaddress)
 
-list1 = conf.sections()
-del list1[0]
-addressList = []
-for i in list1:
-    curList = []
-    curList.append(conf.get(i,'address'))
-    curList.append(conf.get(i,"PK"))
-    addressList.append(curList)
+# list1 = conf.sections()
+# del list1[0]
+# addressList = []
+# for i in list1:
+#     curList = []
+#     curList.append(conf.get(i,'address'))
+#     curList.append(conf.get(i,"PK"))
+#     addressList.append(curList)
 
-print(addressList)
+# print(addressList)
+
+test = conf.get("request","MUDadd")
