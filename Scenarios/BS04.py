@@ -5,9 +5,9 @@ import configparser,os
 #Code of Ethereum user address: 0~9
 consumerCode = int(3) #U4
 supplierList = [6,7,8,9] #{U7,U8,U9,U10}
-offers = [[2,15],[2,10],[1,8],[3,12],[2,10],[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Do not modify with different scenarios
-selection = [7,8,9] #U7
-submitList = [7,8,9] #U7
+offers = [[2,15],[2,10],[1,8],[3,12],[2,10],[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Number of offers = number of users
+selection = [7,8,9] #U6,7,8 selected
+submitList = [7,8,9] #U6,7,8 submitted
 rate = [40,45,50] # rate, 0~50 (solidity have limited ability to deal with float number)
 
 def TransactFunction(function_name, Eth_address, Private_key, ListOfParameters):

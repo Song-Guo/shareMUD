@@ -5,7 +5,7 @@ import configparser,os
 #Code of Ethereum user address: 0~9
 consumerCode = int(1)   #U2
 supplierList = [6] #U7
-offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Do not modify with different scenarios
+offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Number of offers = number of users
 selection = [6] #U7
 submitList = [6] #U7
 rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)

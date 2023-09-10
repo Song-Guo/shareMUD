@@ -4,7 +4,7 @@ import configparser,os
 
 consumerCode = int(0)   #index of list (0~4)
 supplierList = [1,2,3,4] #index of list (0~4)
-offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size]
+offers = [[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size]#Number of offers = number of users
 selection = [2,3,4] #index of list (0~4), note elements of this list must be included by "supplierList"
 submitList = [2,3,4] #should be included by selection!
 rate = [40,50,30] # rate, 0~50 (solidity have limited ability to deal with float number)
