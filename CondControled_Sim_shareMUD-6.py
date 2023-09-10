@@ -115,8 +115,6 @@ w3 = Web3(Web3.HTTPProvider(RPCinterface))
 text = open(filePath, encoding='utf-8').read()
 contract_abi = json.loads(text)
 contract = w3.eth.contract(address=contract_addr, abi=contract_abi)
-
-
 cpe_o = conf.get("request", "cpe_o")
 cpe_h = conf.get("request", "cpe_h")
 mfctr = conf.get("request", "mfctr")
