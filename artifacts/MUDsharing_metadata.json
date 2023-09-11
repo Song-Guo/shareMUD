@@ -13,6 +13,37 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_supplierAddr",
+						"type": "address"
+					}
+				],
+				"name": "ViewRate",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "varUID",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint256",
+								"name": "varRate",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct MUDsharing.single_rate[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "bytes32",
 						"name": "_uniqueID",
 						"type": "bytes32"
@@ -190,6 +221,150 @@
 				],
 				"stateMutability": "payable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_uniqueID",
+						"type": "bytes32"
+					}
+				],
+				"name": "viewOfferList",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "var_offer_eth",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "var_size_data_kb",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "var_supplier_addr",
+								"type": "address"
+							}
+						],
+						"internalType": "struct MUDsharing.single_offer[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "viewOpenRequests",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "varUniqueID",
+								"type": "bytes32"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "var_cpe_h",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_cpe_o",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mfctr",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_dev",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_mdl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "var_fimwr",
+										"type": "string"
+									}
+								],
+								"internalType": "struct MUDsharing.Description",
+								"name": "varDescription",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "varBudget",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "varTimeRequest",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "varConsumerAddr",
+								"type": "address"
+							}
+						],
+						"internalType": "struct MUDsharing.single_request[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_uniqueID",
+						"type": "bytes32"
+					}
+				],
+				"name": "view_submission",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "var_UID",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "string",
+								"name": "var_fileAddr",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "var_supplierAddr",
+								"type": "address"
+							}
+						],
+						"internalType": "struct MUDsharing.single_submission[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -220,11 +395,11 @@
 	},
 	"sources": {
 		"shareMUD/shareMUD-6.sol": {
-			"keccak256": "0x442ed302c2214ad281216b66fa8f133867f0c1e0262c223a5dd591cf00ea337f",
+			"keccak256": "0x08dc96394f13a9ecf2152ee5b998e948b368ebc0affa0af89c7fd25d8b08e92f",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://ddedfd23e40f59e19f45eb49ace90fe12ec090a7d855b0eac114a11d4b74ad6f",
-				"dweb:/ipfs/QmfFBUKkNWDAjiZfhZNpDruKuNMShSN2e7bLMcfjWvG1HA"
+				"bzz-raw://01d000900118a960d845eae7692df02940ebfe698b80b18c4fafc7b1f952f5b4",
+				"dweb:/ipfs/QmRtVv5AJcVGvUKBkNAr4bCWRFy3jz2nA4Q1PbTQ7zWERR"
 			]
 		}
 	},
