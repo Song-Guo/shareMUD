@@ -60,7 +60,18 @@ contract MUDsharing {
     //solidity cannot return a mapping in bulk, 
     //for suppliers to view all avaliable request, need an array of requests
     
-
+    function viewOpenRequests() view public returns(single_request[] memory){
+        return viewRequests;
+    }
+    function viewOfferList(bytes32 _uniqueID) view public returns(single_offer[] memory) {
+        return OfferList[_uniqueID];
+    }
+    function view_submission(bytes32 _uniqueID) view public returns(single_submission[] memory) {
+        return(submissionList[_uniqueID]);
+    }
+    function ViewRate(address _supplierAddr) view public returns(single_rate[] memory) {
+        return(rateList[_supplierAddr]);
+    }
     function sendRequest(
         string memory _cpe_h, 
         string memory _cpe_o, 
