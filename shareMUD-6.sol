@@ -120,6 +120,9 @@ contract MUDsharing {
             _size_data_kb,
             msg.sender
         );
+        selectionBool[_uniqueID][msg.sender] = false;
+        submissionBool[_uniqueID][msg.sender] = false;
+        rateBool[_uniqueID][msg.sender] = false;
         OfferMapping[_uniqueID][msg.sender] = CurOffer;
         OfferList[_uniqueID].push(CurOffer);
     }
@@ -134,61 +137,60 @@ contract MUDsharing {
         }
         uint _sum_ETH_eth = 0 ;
         for(uint i=0; i<_selectionList.length; i++) {
-            address _SelectedSupplierAddr = _selectionList[i];
-            single_offer memory _SelectedOffer = OfferMapping[_uniqueID][_SelectedSupplierAddr];
+            address _SupplierAddr = _selectionList[i];
+            single_offer memory _SelectedOffer = OfferMapping[_uniqueID][_SupplierAddr];
             uint _CurOffer = _SelectedOffer.var_offer_eth;
             _sum_ETH_eth += _CurOffer;
-            selectionBool[_uniqueID][_SelectedSupplierAddr] = true;
-            submissionBool[_uniqueID][_SelectedSupplierAddr] = false;
-            refundBool[_uniqueID][_SelectedSupplierAddr] = false;
-            rateBool[_uniqueID][_SelectedSupplierAddr] = false;
+            selectionBool[_uniqueID][_SupplierAddr] = true;
         }
         require(
         msg.value == _sum_ETH_eth * 1 ether,
         "NoEnoughEth");
     }
-    function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public returns(string memory) {
+
+    function submit(bytes32 _uniqueID,string memory _MUDaddr) payable public{
         single_request memory _CurRequest = RequestMapping[_uniqueID];
         address _supplierAddr = msg.sender;
         require(selectionBool[_uniqueID][_supplierAddr] == true, "NotSelected");
         require(submissionBool[_uniqueID][_supplierAddr] == false, "NoDoublePayment");
+        require(rateBool[_uniqueID][_supplierAddr] == false);
+        single_offer memory _curOffer = OfferMapping[_uniqueID][_supplierAddr];
+        uint _price_in_eth = _curOffer.var_offer_eth;
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
         if(_time_submit >= _expire) {
             address _consumer = _CurRequest.varConsumerAddr;
             address payable _PayConsumer = payable(_consumer);
-            single_offer memory _curOffer = OfferMapping[_uniqueID][_supplierAddr];
-            uint _price =  _curOffer.var_offer_eth;
-            _PayConsumer.transfer(10**18*_price);
-            submissionBool[_uniqueID][_supplierAddr] = true;
-            return("Expire_submit");
+            _PayConsumer.transfer(10**18*_price_in_eth);
+            selectionBool[_uniqueID][_supplierAddr] = false;
+            submissionBool[_uniqueID][_supplierAddr] = false;
         } else {
-            single_offer memory _curOffer = OfferMapping[_uniqueID][_supplierAddr];
-            uint _price_in_eth = _curOffer.var_offer_eth;
             single_submission memory _CurSub = single_submission(_uniqueID,_MUDaddr,_supplierAddr);
             submissionList[_uniqueID].push(_CurSub);
             address payable _PaySupplier = payable(_supplierAddr);
             _PaySupplier.transfer(10**18*_price_in_eth);
             submissionBool[_uniqueID][_supplierAddr] = true;
-            return("Success_Submit");
         }
     }
     function refund(bytes32 _uniqueID, address _supplierAddr) payable public {
         single_request memory _CurRequest = RequestMapping[_uniqueID];
-        require(RequestMapping[_uniqueID].varConsumerAddr == msg.sender, "NotConsumer");
+        address _consumer = RequestMapping[_uniqueID].varConsumerAddr;
+        require( _consumer == msg.sender, "NotConsumer");
         require(selectionBool[_uniqueID][_supplierAddr] == true, "NotSelected");
+        require(submissionBool[_uniqueID][_supplierAddr] == false, "Submitted");
+        require(rateBool[_uniqueID][_supplierAddr] == false);
+        require(refundBool[_uniqueID][_supplierAddr] == false,"Refunded");
         uint _time_submit = block.timestamp;
         uint _expire = _CurRequest.varTimeRequest + expire_submit;
         if(_time_submit < _expire) {
             revert("NotExp");
         }
-        require(submissionBool[_uniqueID][_supplierAddr] == false, "NoDoublePayment");
-        
-        address payable _PayConsumer = payable(RequestMapping[_uniqueID].varConsumerAddr);
-        uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
-        _PayConsumer.transfer(10**18*_CurOffer);
-        submissionBool[_uniqueID][msg.sender] = true;
-        refundBool[_uniqueID][msg.sender] = true;
+        else {
+            address payable _refund = payable(_consumer);
+            uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
+            _refund.transfer(10**18*_CurOffer);
+            refundBool[_uniqueID][_supplierAddr] = true;
+        }
     }
 
     function rate(bytes32 _uniqueID, address _supplierAddr, uint _rate) public {

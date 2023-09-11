@@ -212,13 +212,7 @@
 					}
 				],
 				"name": "submit",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
+				"outputs": [],
 				"stateMutability": "payable",
 				"type": "function"
 			},
@@ -395,11 +389,11 @@
 	},
 	"sources": {
 		"shareMUD/shareMUD-6.sol": {
-			"keccak256": "0x08dc96394f13a9ecf2152ee5b998e948b368ebc0affa0af89c7fd25d8b08e92f",
+			"keccak256": "0xf209e6a655fc66449eaebae1900fda9f425aa491ec05d1580f52baa256f708d4",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://01d000900118a960d845eae7692df02940ebfe698b80b18c4fafc7b1f952f5b4",
-				"dweb:/ipfs/QmRtVv5AJcVGvUKBkNAr4bCWRFy3jz2nA4Q1PbTQ7zWERR"
+				"bzz-raw://cceca7187d3ad14c1b520446f589b4df1d69d4eab148a8470fddc8df5e5d5451",
+				"dweb:/ipfs/QmeaTeVZW8wjgjEzDsJvpqtAK89eSCFGf7Q1AJNx2vCwBJ"
 			]
 		}
 	},

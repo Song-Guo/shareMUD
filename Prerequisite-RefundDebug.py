@@ -3,10 +3,10 @@ import json,time,sys,csv
 import configparser,os
 
 consumerCode = int(3)   #index of list (0~4)
-supplierList = [0,1,2,3] #index of list (0~4)
+supplierList = [0,1,2] #index of list (0~4)
 offers = [[14,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size]
-selection = [2,3] #index of list (0~4), note elements of this list must be included by "supplierList"
-submitList = [2] #should be included by selection!
+selection = [0,1] #index of list (0~4), note elements of this list must be included by "supplierList"
+submitList = [0] #should be included by selection!
 rate = [] # rate, 0~50 (solidity have limited ability to deal with float number)
 #supplier index 3 selected not submitted, consumer should be able to refund
 #Also need to understand how these mappings of bool works (selection bool, submission bool and rate bool)
