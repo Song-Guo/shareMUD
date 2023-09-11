@@ -1,15 +1,16 @@
 from web3 import Web3
 import json,time,sys,csv
 import configparser,os
-###No submission is made: considering refund: Need new script
+from time import sleep
+
 #Code of Ethereum user address: 0~9
-consumerCode = int(3) #U4
+consumerCode = int(4) #U5
 supplierList = [6,7,8,9] #{U7,U8,U9,U10}
 offers = [[2,15],[2,10],[1,8],[3,12],[2,10],[2,15],[2,10],[1,8],[3,12],[2,10]] #[price,data_size] #Do not modify with different scenarios
-selection = [7,8,9] #U7
-submitList = [7,8,9] #U7
-rate = [40,45,50] # rate, 0~50 (solidity have limited ability to deal with float number)
-
+selection = [7,8,9] #U8,U9,U10
+submitList = [7,8] #U8,U9
+rate = [40,45] # rate, 0~50 (solidity have limited ability to deal with float number)
+#U10 failed to submit before expired, and as a result the smart contract will prevent U10 from submit a MUD file and refund the ETH to consumer U5
 def TransactFunction(function_name, Eth_address, Private_key, ListOfParameters):
     print(
         f'Send data to method "{function_name}" with {ListOfParameters} from account{Eth_address} to smart contract {contract_addr}'
@@ -88,8 +89,6 @@ def gasStatistic():
     with open("/Users/skoll/Desktop/test.csv","a") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(gasConsumption)
-
-
 
 Dir = os.path.split(os.path.realpath(__file__))[0]
 configPath = os.path.join(Dir,"Env.ini")
@@ -230,7 +229,7 @@ else:
 if rate != []:
     RateList = []
     j = 0
-    for i in selection:
+    for i in submitList:
         CurRate = rate[j]
         CurSupplier = accountList[i][0]
         result = ViewFunction("ViewRate", [CurSupplier])
@@ -250,6 +249,24 @@ else:
 
 gasStatistic()
 
+print("If consumer request a refund before expiry, the request will be denyed by smart contract")
+print("Only when submission expired, consumer can request a refund and smart contract will pay ETH back to consumer")
+selection = input("Input 'now' if you wish to see the refund request being rejected, otherwish please input 'sleep': ")
+failedSupplier = accountList[9][0]
+def refund_now():
+    TransactFunction("refund",consumerAddr,consumerPK,[curUID,failedSupplier])
 
+if selection == "now":
+    viewBalance()
+    refund_now()
+elif selection == "sleep":
+    print(f'Expect Ether balance of consumer {consumerAddr} increased by executing refund')
+    viewBalance()
+    sleep(60)
+    refund_now()
+    viewBalance()
+
+
+#manual execution Okay, but this piece of code always show "revert NotExp". Can't understand why
 
 

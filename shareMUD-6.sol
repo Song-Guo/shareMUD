@@ -187,7 +187,7 @@ contract MUDsharing {
         }
         else {
             address payable _refund = payable(_consumer);
-            uint _CurOffer =  OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
+            uint _CurOffer = OfferMapping[_uniqueID][_supplierAddr].var_offer_eth;
             _refund.transfer(10**18*_CurOffer);
             refundBool[_uniqueID][_supplierAddr] = true;
         }
