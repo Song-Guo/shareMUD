@@ -248,7 +248,7 @@ else:
     sys.exit()
 
 gasStatistic()
-print(filePath)
+
 
 
 
