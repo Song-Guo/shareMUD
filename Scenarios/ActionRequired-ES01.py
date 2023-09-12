@@ -262,11 +262,11 @@ if selection == "now":
 elif selection == "sleep":
     print(f'Expect Ether balance of consumer {consumerAddr} increased by executing refund')
     viewBalance()
-    sleep(60)
+    sleep(30)
     refund_now()
     viewBalance()
 
 
-#manual execution Okay, but this piece of code always show "revert NotExp". Can't understand why
+#manual execution Okay, but this piece of code always show "revert NotExp". Don't understand why
 
 
