@@ -266,7 +266,3 @@ elif selection == "sleep":
     refund_now()
     viewBalance()
 
-
-#manual execution Okay, but this piece of code always show "revert NotExp". Don't understand why
-
-

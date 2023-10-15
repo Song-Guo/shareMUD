@@ -1,9 +1,9 @@
 # shareMUD
-A data marketplace smart contract used for trade and share MUD files.
 
-To deploy smart contract:
+This reposity contains essential files for a data marketplace smart contract used for trade and share MUD files:
 
-0. Private Ethereum Blockchain
-1. Use Remix IDE online, connect to local blockchain
-2. Deploy smart contract on local Ethereum blockchain
-3. You can now mannually execute some transaction, or use automatical test script, or use Dapp
+1. shareMUD.sol is the solidity code of smart contract.
+2. ConfigurationFiles contains configuration and metadata.
+3. UtilityFunctionFiles contains python scripts for testing and debugging purposes.
+4. MUDdata contains IoT MUD profiles used in our study.
+5. Scenarios contains python scripts of our testing scenarios.
