@@ -7,8 +7,8 @@ This folder contains automated test scripts designed to validate the smart contr
     - Web3 RPC interface of local Ethereum network (typically http://127.0.0.1:7545 by default in Ganache Ethereum blockchain)
     - Path to the ABI file (an ABI file is available within this current folder).
     - For each of 5 Ethereum users:
-        -- Ethereum address
-        -- Private key associated with each address
+        (a) Ethereum address
+        (b) Private key associated with each address
 3. Update the **Env.ini** file with these parameters
 4. To execute the Python3 test script, ensure you have installed the python3 environment on your workstation and installed the following packages:
     - Web3.py
