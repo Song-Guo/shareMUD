@@ -14,6 +14,7 @@ This folder contains automated test scripts designed to validate the smart contr
     - Web3.py
     - json,time,sys,csv
     - configparser,os
+    
     Before running the scripts, it's recommended to run the following command in your terminal:
     ```
     pip3 install web3
